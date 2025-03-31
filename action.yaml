@@ -22,10 +22,13 @@ runs:
       shell: bash
       run: |
         BRANCH="${GITHUB_REF##*/}"
-        # ISSUE_NO=$(echo "$BRANCH" | cut -d"-" -f1 | cut -d"." -f2)
-        ISSUE_NO=123
-        
-        echo "Branch: $BRANCH"
+        ISSUE_NO=$(echo "$BRANCH" | cut -d"-" -f1 | cut -d"." -f2)
+        if [[ ! "$ISSUE_NO" =~ ^[0-9]+$ ]]; then
+          echo "No issue number found in branch name: $BRANCH"
+          echo "issue-number=" >> $GITHUB_OUTPUT
+          exit 1
+        fi
+        echo "Branch name: $BRANCH"
         echo "Found issue number: $ISSUE_NO"
         echo "issue-number=$ISSUE_NO" >> $GITHUB_OUTPUT
 

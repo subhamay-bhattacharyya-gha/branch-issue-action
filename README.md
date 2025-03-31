@@ -1,66 +1,43 @@
-![](https://img.shields.io/github/commit-activity/t/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/last-commit/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/release-date/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/repo-size/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/directory-file-count/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/issues/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/languages/top/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/commit-activity/m/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/bsubhamay/create-branch-action/raw/branch-issue-action.json?)
+![](https://img.shields.io/github/commit-activity/t/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/last-commit/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/release-date/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/repo-size/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/directory-file-count/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/issues/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/languages/top/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/commit-activity/m/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/bsubhamay/2634bcd24d438581fd81fe06f006d1b1/raw/branch-issue-action.json?)
 
-# Create Feature Branch Composite Action
+# Branch Issue
 
-A GitHub Composite Action to automatically create a feature branch from an issue using the GitHub API.
+**Get the issue number associated with the current branch and check if it exists on GitHub.**
 
-## Features
+This GitHub Composite Action extracts an issue number from the branch name and verifies whether that issue exists in the repository.
 
-- Creates a new branch based on an existing issue.
-- Generates a branch name using project info and issue title.
-- Posts a comment on the issue with a link to the new branch.
+---
 
-## Inputs
+## 🔧 Inputs
 
-| Name           | Description                                     | Required | Default |
-|----------------|-------------------------------------------------|----------|---------|
-| `base-branch`  | The base branch to create the new branch from.  | No       | `main`  |
-| `title-length` | Number of characters to keep from issue title.  | Yes      | `15`    |
-| `github-token` | GitHub token with repo access.                  | Yes      | –       |
+| Name          | Description      | Required |
+|---------------|------------------|----------|
+| `github-token` | GitHub token with repo access | ✅ Yes |
 
-## Usage
+---
 
-```yaml
-jobs:
-  create-feature-branch:
-    runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      contents: write
-    steps:
-      - uses: your-org/create-feature-branch-action@v1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          title-length: 20
-```
+## 📤 Outputs
 
-> **Note:** This action is triggered by issue events. Make sure your workflow listens to `issues` events (like `opened`).
+| Name            | Description                            |
+|-----------------|----------------------------------------|
+| `issue-number`  | Extracted issue number from branch     |
+| `issue-exists`  | `true` if the issue exists, else `false` |
 
-## How It Works
+---
 
-1. Extracts the issue number and title.
-2. Builds a branch name using:
-   ```
-   feature/<PROJECT_PREFIX>-<PROJECT_NO>.<ISSUE_NUMBER>-<slugified-title>
-   ```
-3. Uses the GitHub API to create the branch from the base branch.
-4. Comments on the issue with a link to the new branch.
+## 🧠 How It Works
 
-## Example Output
+- It grabs the current branch name from `GITHUB_REF`.
+- It extracts the issue number based on a naming convention (e.g. `issue.123-feature-name` → `123`).
+- It uses the GitHub API to check if the issue exists in the current repository.
 
-Given:
-- Repo: `acme-portal`
-- Issue #123 titled: `Add support for dark mode`
+---
 
-Generated branch might be:
-```
-feature/PORTAL-123-add-support
-```
+## 📁 Example Branch Name Format
 
-## Requirements
+The action expects the branch name to follow a format where the issue number can be extracted as the second segment:
 
-- `jq` (used internally for parsing JSON).
-- A GitHub token with `repo` and `issues` permissions.
+The branch name should be in the format `<Project Code>.<Issue Number>-<Project Name>-<IaC>`, e.g, `0918-api-gateway-py-cft`
 
 ## License
 
