@@ -1,49 +1,44 @@
-![](https://img.shields.io/github/commit-activity/t/subhamay-bhattacharyya-gha/github-action-template)&nbsp;![](https://img.shields.io/github/last-commit/subhamay-bhattacharyya-gha/github-action-template)&nbsp;![](https://img.shields.io/github/release-date/subhamay-bhattacharyya-gha/github-action-template)&nbsp;![](https://img.shields.io/github/repo-size/subhamay-bhattacharyya-gha/github-action-template)&nbsp;![](https://img.shields.io/github/directory-file-count/subhamay-bhattacharyya-gha/github-action-template)&nbsp;![](https://img.shields.io/github/issues/subhamay-bhattacharyya-gha/github-action-template)&nbsp;![](https://img.shields.io/github/languages/top/subhamay-bhattacharyya-gha/github-action-template)&nbsp;![](https://img.shields.io/github/commit-activity/m/subhamay-bhattacharyya-gha/github-action-template)&nbsp;![](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/bsubhamay/06e35985280456b113298ed56c626e73/raw/github-action-template.json?)
+![](https://img.shields.io/github/commit-activity/t/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/last-commit/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/release-date/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/repo-size/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/directory-file-count/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/issues/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/languages/top/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/github/commit-activity/m/subhamay-bhattacharyya-gha/branch-issue-action)&nbsp;![](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/bsubhamay/2634bcd24d438581fd81fe06f006d1b1/raw/branch-issue-action.json?)
 
-# GitHub Template Repository - Composite Action
+# Branch Issue
 
-A Template GitHub Repository to be used to create a composite action.
+**Get the issue number associated with the current branch and check if it exists on GitHub.**
 
-# Action Name
-
-**Action Description**
-
-This GitHub Action provides a reusable composite workflow that sets up Python and interacts with the GitHub API to post a comment on an issue, including a link to a created branch.
+This GitHub Composite Action extracts an issue number from the branch name and verifies whether that issue exists in the repository.
 
 ---
 
-## Inputs
+## 🔧 Inputs
 
-| Name           | Description         | Required | Default        |
-|----------------|---------------------|----------|----------------|
-| `input-1`      | Input description.  | No       | `default-value`|
-| `input-2`      | Input description.  | No       | `default-value`|
-| `input-3`      | Input description.  | No       | `default-value`|
-| `github-token` | GitHub token. Used for API authentication. | Yes | — |
+| Name          | Description      | Required |
+|---------------|------------------|----------|
+| `github-token` | GitHub token with repo access | ✅ Yes |
 
 ---
 
-## Example Usage
+## 📤 Outputs
 
-```yaml
-name: Example Workflow
+| Name            | Description                            |
+|-----------------|----------------------------------------|
+| `issue-number`  | Extracted issue number from branch     |
+| `issue-exists`  | `true` if the issue exists, else `false` |
 
-on:
-  issues:
-    types: [opened]
+---
 
-jobs:
-  example:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+## 🧠 How It Works
 
-      - name: Run Custom Action
-        uses: your-org/your-action-repo@v1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          input-1: your-value
-          input-2: another-value
-          input-3: something-else
-```
+- It grabs the current branch name from `GITHUB_REF`.
+- It extracts the issue number based on a naming convention (e.g. `issue.123-feature-name` → `123`).
+- It uses the GitHub API to check if the issue exists in the current repository.
+
+---
+
+## 📁 Example Branch Name Format
+
+The action expects the branch name to follow a format where the issue number can be extracted as the second segment:
+
+The branch name should be in the format `<Project Code>.<Issue Number>-<Project Name>-<IaC>`, e.g, `0918-api-gateway-py-cft`
+
+## License
+
+MIT

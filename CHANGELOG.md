@@ -2,7 +2,7 @@
 
 ## [1.0.0] - 2025-03-31
 ### Initial version created
-- GitHub Template repository for Composite Action
+- GitHub Composite Action to check is the branch is created via GitHub issue using GitHub Action Workflow
 
 ### Fixed
 - NA
