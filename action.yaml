@@ -40,16 +40,21 @@ runs:
       run: |
         REPO="${{ github.repository }}"
         ISSUE_NO=${{ steps.extract-issue.outputs.issue-number }}
+
+        ISSUE_URL="https://github.com/$REPO/issues/$ISSUE_NO"
         
         STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer $GITHUB_TOKEN" \
-          https://api.github.com/repos/$REPO/issues/$ISSUE_NO)
+          $ISSUE_URL)
 
         if [ "$STATUS_CODE" -eq 200 ]; then
           echo "✅ Issue #$ISSUE_NO exists in $REPO"
           echo "issue-exists=true" >> $GITHUB_OUTPUT
+          echo "### GitHub Branch created from issue : ✅ [#${ISSUE_NO}]($ISSUE_URL)" >> $GITHUB_STEP_SUMMARY
         else
           echo "❌ Issue #$ISSUE_NO does NOT exist in $REPO (HTTP $STATUS_CODE)"
           echo "issue-exists=false" >> $GITHUB_OUTPUT
+          echo "### GitHub Branch created from issue : ❌ Issue [#${ISSUE_NO}]($ISSUE_URL) not found" >> $GITHUB_STEP_SUMMARY
+          exit 1
         fi
