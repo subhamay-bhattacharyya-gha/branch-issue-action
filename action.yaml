@@ -52,7 +52,7 @@ runs:
         REPO="${{ github.repository }}"
         ISSUE_NO=${{ steps.extract-issue.outputs.issue-number }}
 
-        ISSUE_URL="https://github.com/$REPO/issues/$ISSUE_NO"
+        ISSUE_URL="https://github.com/repos/$REPO/issues/$ISSUE_NO"
         
         STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
           -H "Accept: application/vnd.github+json" \
