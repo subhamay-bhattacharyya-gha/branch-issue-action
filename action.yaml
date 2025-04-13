@@ -31,7 +31,7 @@ runs:
         BRANCH="${GITHUB_REF##*/}"
         echo "BRANCH=$BRANCH"
         ISSUE_NO=$(echo "$BRANCH" | cut -d"-" -f1 | cut -d"." -f2)
-        ecch "ISSUE_NO=$ISSUE_NO"
+        echo "ISSUE_NO=$ISSUE_NO"
         if [[ ! "$ISSUE_NO" =~ ^[0-9]+$ ]]; then
           echo "No issue number found in branch name: $BRANCH"
           echo "issue-number=" >> $GITHUB_OUTPUT
