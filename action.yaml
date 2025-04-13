@@ -17,17 +17,27 @@ outputs:
 runs:
   using: 'composite'
   steps:
+
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJSON(github) }}
+      run: echo "$GITHUB_CONTEXT"
+
     - name: Extract issue number from branch
       id: extract-issue
       shell: bash
       run: |
         BRANCH="${GITHUB_REF##*/}"
+        echo "BRANCH=$BRANCH"
         ISSUE_NO=$(echo "$BRANCH" | cut -d"-" -f1 | cut -d"." -f2)
+        ecch "ISSUE_NO=$ISSUE_NO"
         if [[ ! "$ISSUE_NO" =~ ^[0-9]+$ ]]; then
           echo "No issue number found in branch name: $BRANCH"
           echo "issue-number=" >> $GITHUB_OUTPUT
           exit 1
         fi
+        # Extract type label (e.g., 'type:bug')
+
         echo "Branch name: $BRANCH"
         echo "Found issue number: $ISSUE_NO"
         echo "issue-number=$ISSUE_NO" >> $GITHUB_OUTPUT
